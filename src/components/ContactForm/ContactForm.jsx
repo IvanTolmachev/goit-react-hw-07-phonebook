@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { Form, Label, Input, AddBtn } from './ContactForm.styled';
 import InputMask from 'react-input-mask';
-import { addContact } from 'redux/contactsSlice';
-import { nanoid } from '@reduxjs/toolkit';
+import { arrContacts } from 'redux/selectors';
+import { addContact } from 'redux/operation';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-  const { contacts } = useSelector(state => state.contacts);
+  const contacts = useSelector(arrContacts);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -32,7 +31,7 @@ export const ContactForm = () => {
       window.alert(`Contact ${name} is already in contacts`);
       return;
     }
-    dispatch(addContact({ id: nanoid(), number, name }));
+    dispatch(addContact({ number, name }));
     reset();
   };
 
@@ -61,10 +60,10 @@ export const ContactForm = () => {
         Number
         <InputMask
           className="input-tel"
-          mask="999-99-99"
+          mask="999-999-9999"
           type="tel"
           name="number"
-          placeholder="777-77-77"
+          placeholder="777-777-7777"
           value={number}
           onChange={handleChange}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"

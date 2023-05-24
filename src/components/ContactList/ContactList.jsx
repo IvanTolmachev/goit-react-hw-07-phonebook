@@ -1,16 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { List, Item, Name, NumberName, DeleteBtn } from './ContactList.styled';
-import { deleteContact } from 'redux/contactsSlice';
+import { deleteContact } from 'redux/operation';
+import { filteredContacts } from 'redux/selectors';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const { contacts } = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
-  const filterList = filter
-    ? contacts.filter(({ name }) =>
-        name.toLowerCase().includes(filter.toLowerCase())
-      )
-    : contacts;
+  const filterList = useSelector(filteredContacts);
   return (
     <List>
       {filterList.map(({ id, name, number }) => (
